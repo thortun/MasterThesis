@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% BIBLIOGRAPHY STUFF
+
+\usepackage[all]{xy} % For diagrams
+\usepackage[symbol]{footmisc} % For symbol footnote
+
+\usepackage{xargs}                      % Use more than one optional parameter in a new commands
+\usepackage[pdftex,dvipsnames]{xcolor}  % Coloured text etc.
+% 
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+
+% TODO STUFF
+\newcommandx{\needtodo}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+
+% Tikz stuff
+\usepackage{tikz}
+\usetikzlibrary{patterns}
+\usepackage{hyperref}
+\usepackage[linesnumbered,lined,commentsnumbered]{algorithm2e} % For writing beautiful algoritms
+
+%\theoremstyle{plain}
+%\newtheorem{thm}{Theorem}[chapter] % reset theorem numbering for each chapter
+
+%\theoremstyle{definition}
+%\newtheorem{defn}[thm]{Definition} % definition numbers are dependent on theorem numbers
+%\newtheorem{exmp}[thm]{Example} % same for example numbers
+
+% Custom commands and stuff
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+
+\theoremstyle{definition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+
+% Custon commands to make mathmode-ideals and stuff more easy my man
+% \mathfrak stuff
+\newcommand{\frakp}{\mathfrak{p}}
+\newcommand{\fraka}{\mathfrak{a}}
+\newcommand{\frakb}{\mathfrak{b}}
+\newcommand{\frakI}{\mathfrak{I}}
+\newcommand{\frakF}{\mathfrak{F}}
+\newcommand{\frakP}{\mathfrak{P}}
+\newcommand{\frakq}{\mathfrak{q}}
+\newcommand{\calI}{\mathcal{I}}
+\newcommand{\calJ}{\mathcal{J}}
+% Class group
+\newcommand{\CL}{\text{CL}}
+% mathcal
+\newcommand{\OO}{\mathcal{O}}
+% Complex conjugate
+\newcommand{\compconj}[1]{%
+  \overline{#1}%
+}
+\let\vec\boldsymbol % change how \vec works
+\newcommand{\suchthat}{\;|\;}
+\newcommand{\modulo}{\mathop{}\!\mathrm{\; mod \;}}
+
+% Mathbb-s
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\Norm}{\mathrm{N}}
+\newcommand{\Trace}{\mathrm{Tr}}
+\newcommand{\inverse}{^{-1}}
+
+\title{Master Thesis}
+\author{Thor Tunge}
+\date{Datum}
+
+
+\begin{document}
+
+\maketitle
+
+\newpage
+\input{abstract.tex}
+
+\newpage
+\tableofcontents
+
+\newpage
+\input{introduction.tex}
+\newpage
+\input{preliminaries.tex}
+
+\newpage
+\input{algebra.tex}
+
+\newpage
+\input{lattice.tex}
+
+\newpage
+\input{findgen.tex}
+
+\newpage
+\input{recoveringshortgen.tex}
+
+\newpage
+\input{svp.tex}
+
+\newpage
+\input{z_bibliography.tex}
+
+\end{document}

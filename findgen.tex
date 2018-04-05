@@ -1,0 +1,62 @@
+\section{Find Generator}
+The first part of solving SG-PIP is to find a generator for an ideal. We have a sub-exponential classical algorithm due to Biasse and Fieker\cite{Find Generator Classic} and a quantum polynomial time algorithm due to Biasse and Fang\cite{Find Generator Quantum}. As there exists a polynomial time algorithm to make such a generator short, having an efficient algorithm for finding the generator in the first place is the main problem of this attack. Both these results rely on the Generalized Rieman Hypothesis\improvement{Talk about this?}
+
+\subsection{Some Notation}
+The time complexity of algorithms here is often of a special form, so to have a cleaner notation we denote
+\begin{align*}
+    L_\Delta (a, c) = \text{e}^{c\log(|\Delta |)^a \log \log (|\Delta |)^{1 - a}},
+\end{align*}
+where \(\Delta\) is the discriminant of the field, clear by context. Many result also state that we find a \emph{compact representation}. 
+\begin{definition}[Compact Representation]
+    Let \(l > 0\) be a constant, a compact representation of \(\alpha\in\OO\) with respect to the integral basis \(\{\alpha_1, \dots ,\alpha_n\}\) of \(\OO\) is a set of exact representations of polynomial size algebraic numbers \(\gamma_j\) satisfying \(\alpha = \gamma_0\gamma_1^{l}\dots\gamma_k^{l^k}\), where \(k\) is polynomial in the size of the input. 
+\end{definition}
+The essence of this definition is that a compact representation is a way of representing an algebraic integer which is pretty short. For computational algebraic number theory, it would be bad to need too much memory to represent the values we are intereseted in. Lucklily, we have that for any \(\alpha\in\OO\), there exists a compact represenation\cite{Compact Representation}.\improvement{Do we need to talk more about this?}
+\subsection{Classic Algorithm}
+The main result of the classical part\cite{Find Generator Classic} is an algorithm that has time-complexity \(L(\frac{2}{3} + \varepsilon, c)\) for arbitrary \(\varepsilon > 0\) and \(c>0\). The algorithm is based on some heuristics. The method uses index calculus. Let \(\mathcal{B} = \{\frakp_1,\dots\frakp_N\}\) be a set of invertible prime ideals in \(\OO\) which generate \(\CL\). Consider the morphism\needtodo{show this is morphism?}
+\[
+    \xymatrix@R-2pc{
+        \ZZ^N\ar[r]^{\varphi} & \mathcal{I}\ar[r]^{\pi} & \CL \\
+        (e_1,\dots,e_N)\ar[r] &  \prod\limits_{i = 1}^N\frakp_i^{e_i}\ar[r] & \prod\limits_{i = 1}^N\left[\frakp_i \right]^{e_i}.
+    }
+\]
+Now we have that \(\ZZ^N/\ker (\pi\circ\varphi )\simeq\CL\) so computing \(\CL\) comes down to computing \(\ker (\pi\circ\varphi)\). The kernel of this map is exactly the \((e_1,\dots ,e_N)\in\ZZ^N\) such that \(\frakp_1^{e_1}\dots\frakp_N^{e_N} = (\alpha) = \OO\). Using the index calculus method, we collect many relations of the form \(\prod_i\frakp_i^{{e_i^{(j)}}} = (\alpha_j)\) and put them in the rows of a relation matrix. If we can collect enough relations, the Smith Normal Form \needtodo{talk about SNF} will give us the structure of \(\CL\). Now picking \(X = (x_1,\dots,x_N)\) from the \emph{left} kernel of the relation matrix \(M\), we can make a unti \(\gamma_X = \alpha^{x_1}\dots\alpha_N^{x_N}\)\needtodo{Convince yourself}. We have that 
+\begin{align*}
+    (\gamma_X) = \frakp_1^{\sum_i x_ie_i^{(1)}}\dots\frakp_N^{\sum_i x_ie_i^{(N)}} = \frakp_1^0\dots\frakp_N^0 = (1) = \OO 
+\end{align*}
+and we get a way of finding units on \(\OO\). It is summarized in the following algorithm:
+\begin{figure}
+    \centering
+    \begin{algorithm}[H]
+     \DontPrintSemicolon
+     Derive random relations in \(\CL _K\) between classes of elements of \(\mathcal{B}\)\;
+     Let \(M\) be the matrix of relations for a generating system of the \(\ZZ\)-lattice of relations\;
+     Compute \(\ker (M)\)\;
+     Find a minimal generating set of the units of the form \(\gamma_X\) for \(X\in\ker (M)\)\;
+     Find the group structure of \(\CL _K\) by the SNF of \(M\)\;
+     Clarify the result.
+     \caption{Finding a generator for a principal(?) ideal.}
+    \end{algorithm}
+\end{figure}
+Theorems from \cite{Find Generator Quantum}
+\begin{theorem}
+    We have an algorithm to compute the ideal class group \(\CL _K\) and a compact representation of fundamental system of units of an order \(\OO\) of discriminant \(\Delta\) in a number field of degree \(n\) in time \(L_\Delta (a, c)\) where 
+    \begin{itemize}
+        \item \(a = 2/3 + \varepsilon\) for \(\varepsilon > 0\) arbitrarily small
+        \item \(a = 1/2\) when \(n\leq \log (|\Delta|)^{3/4 + \varepsilon}\) for \(\varepsilon > 0\) arbitrarily small.
+    \end{itemize}
+\end{theorem}
+This theorem is under GRH and some more heuristics. 
+
+\subsection{Quantum Algorithm}
+We present the main theorems of \cite{Find Generator Quantum}
+\begin{theorem}
+    There is a quantum algorithm for computing the \(S\)-unit group of a number field \(K\) in compact representation which runs in polynomial time in the parameters \(n=\emph{deg } K\), \(\log |\Delta |\), \(|S|\) and \(\emph{max}_{\frakp\in S}\{\log (N(\frakp )\}\). 
+\end{theorem}
+
+\begin{theorem}
+    Under GRH, there is a quantum algorithm for computing the class group of the ring of integers \(\OO\) in a number field \(K\) which runs in polynimial time in the parameters \(n = \emph{deg } K\) and \(\log |\Delta |\).
+\end{theorem}
+
+\begin{theorem}
+    There is a quantum algorithm for deciding if an ideal \(\fraka\in\OO\) is principal, and for computing \(\alpha\in\OO\) in compact representation such that \((\alpha) = \fraka\) which runs in polynomial time in the parameters \(n = \emph{deg } K\), \(\log N(\fraka)\) and \(\log |\Delta |\).
+\end{theorem}

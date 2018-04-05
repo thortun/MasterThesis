@@ -1,0 +1,12 @@
+\section{SVP}
+The field of lattice theory got a lot of attention when Ajtai\cite{Ajtai} showed a reduction from many worst case problems to average case problems\needtodo{right way of reduction?}. This made it a lot easier for provable security of cryptographic schemes based on lattices. \par
+In addition, lattice have proven resistant to quantum computer attacks\improvement{Find source for this}. However, as we are going to show in this section, for some structured lattices and some problems, there exists quantum polynomial time algorithms.\needtodo{True?}\par
+From the discussion of Section \(a \text{ and } b\), we get the following theorem.
+\begin{theorem}
+There is an efficient quantum algorithm for solving \(\text{SVP}_\gamma\) with approximation factor \(\gamma = O(\sqrt{m\log m})\).
+\end{theorem}
+\begin{proof}
+Firstly, we apply a quantum algorithm to find a generator for the principal ideal we are interest in\improvement{talk about this}. We then use the methods described in this section to recover a short generator based on this.
+\end{proof}
+
+We have shown that there exists a quantum polynomial time algorithm to find a generator for the ideal \(\ZZ[X]/\langle f(x) \rangle\). We have also shown a polynomial time algorithm to make this generator short. This means that cryptosystems based on principal ideal lattices are not secure against quantum computers. Sometimes such cryptosystems use the generator as the public key, which means that these systems are not secure against classical computers either.  \improvement{Show which systems} We have not shown that ideal lattices are insecure in general. However, if the cryptosystems does not disallow principal ideal lattices, then the attacks discussed will be able to attack these systems if we, by chance, choose a principal ideal in the cryptographic system. However, it was shown/argued\change{change} in \cite{Identifying Ideal Lattices} that a randomly chosen lattice is practical never ideal. This means that this quantum attack on SVP will, in practice, never work unless we purposefully instantiate with basis for an ideal lattice.

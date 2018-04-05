@@ -1,0 +1,41 @@
+\section{Introduction}
+    \label{Section:Introduction}\needtodo{Talk about FHE?}
+    With the advent of quantum computers cryptographic schemes based on problems not easily broken by quantum algorithms have risen in popularity. A group of such problems arise in the theory of lattices (Section \ref{Section:Lattice Theory}. A lattice is a discrete subspace of \(\mathbb{R}^n\). Some central, hard problems that naturally arise in lattice-based cryptography is to find the shortest vector in the lattice, the \emph{Shortest Vector Problem} (SVP), and finding the closest lattice-point to a vector in \(\mathbb{R}^n\), the \emph{Closest Vector Problem}. These two problems are closely related.\\
+    % Input a figure of some lattice stuff
+    \input{./tikzpicktures/latticeFigure1.tex}
+    
+    Many efficient cryptosystems rely on \emph{ideal lattices}, which correspond to ideals in a certain ring\footnote{Namely \(\mathbb{Z}[X]/\langle f(x)\rangle\) for an irreducible \(f(x)\)}. Solving SVP in such lattices boils down to finding a 'short' generator for the ideal. We often assume that there exists a short generator, so that the search can succeed. There are two steps in finding such a generator for a principal ideal \cite{Recover Short Gen}.
+    
+    Firstly, find a generator for a principal ideal, which need not be short. This is called the \emph{principal ideal problem}. The results of \cite{Find Generator Classic} has show that this is possible to do classically in sub-exponential time, namely \(2^{N^{1/2 + O(1)}}\). Additionally, there exists a quanum polynomial time algorithm from \cite{Find Generator Quantum} which finds such a generator. Secondly, after a generator is found, transform it into a 'short' generator and thereby recover the secret key of the cryptosystems. A proof of the second part of the process was provided by \cite{Recover Short Gen}.
+    
+    The security of many modern lattice based cryptography schemes is based on the hardness of these problems. In particular, the security of the fully homomorphic scheme by Gentry \cite{Gentry} and schemes based on his methods, such as the one by Smart and Vercauteren\needtodo{Find source for this}, hinges on solving the SG-PIP problem. There is a classical reduction from SG-PIP to (LWE) by Peikert.\cite{Reduction PG-PIP LWE}\improvement{Read this source}. So finding a good solution to SG-PIP means that LWE is not hard, and assuming LWE is hard then these cryptosystems are secure in some sense.\improvement{Elaborate}\par
+    
+    The structure of this thesis is as follows: We start by introducing the general algebraic number theory required to understand the machinery used in various algorithms and problems. Then we present basic lattice theory and the hard problems used in cryptography associated with lattices. We discuss the relationship between hard problems and how they relate to security. Next, we present the algorithms for the first part of SG-PIP, discussing both the sub-exponential classic and quantum polynomial algorithm. From there we show how a found generator can be made 'short'. Any specific theory needed in either of these algorithms will be presented in that chapter.\newpage
+\subsection{Glossary}
+    To keep consistent notation, use the following notation my man
+    \begin{itemize}
+        \item \(K, L\) are a number fields, \(L\) extension of \(K\).
+        
+        \item \(R = \OO_K\): Ring of integers. Omit \(K\) if it is clear.
+        
+        \item \(\alpha\) are integral elements
+        
+        \item \(\Lambda\) is a lattice
+        
+        \item \(\mathcal{B}\) and \(\mathcal{B}^\vee\) are the basis and dual basis, respectively.
+        
+        \item \(\vec{b}\) and \(\vec{b}^\vee\) are basis vectors and dual basis vectors, respectively
+        
+        \item \(\fraka, \frakb\) are ideals
+        
+        \item \(\frakp, \frakq\) are prime ideals
+        
+        \item \(\calI\) is the group of fractional ideals, or just set of ideals
+        
+        \item Keep \(U\) to mean group of units of something, probably group of roots of unity.
+        
+        \item \(\sigma\) is the cannonical embedding. \(\tau\) is the coordiante embedding?
+        
+        \item \(d\) is a divisor.
+        
+    \end{itemize}

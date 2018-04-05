@@ -1,0 +1,498 @@
+\section{Algebraic Number Theory}
+\label{Section:Algebraic Number Theory}
+    Algebraic number theory is the study of finite extensions \(K\) of \(\QQ\). We generalize the notion of integers, study the ideals in this 'new' ring of integers and extend the notion of ideal to give the set of ideals a group structure. Some of the notion here makes sense more more general extensions, but we state them only in the spirit of finite extensions of \(\QQ\). Throughout this section (and the thesis in general), \(K\) denotes a finite extension of \(\QQ\).
+\subsection{Norm and Trace}
+    To get some geometry on certain algebraic structures, we want to define the norm and trace of elements. 
+    \begin{definition}[Norm and Trace]
+    Let \(K/\QQ\) be a finite field extension. Consider the multiplication map
+    \begin{align*}
+        \begin{split}
+            \mu_\alpha: & K\rightarrow K\\
+            &x\mapsto\alpha x.
+        \end{split}
+    \end{align*}
+    By fixing a \(\QQ\)-basis of \(K\), we can define the \emph{determinant} and \emph{trace} maps to be
+    \begin{align*}
+        \begin{split}
+            \emph{N}_{K/\QQ}(\alpha) & = \emph{det}(\mu_\alpha)\\
+            \emph{Tr}_{K/\QQ}(\alpha) & = \emph{Tr}(\mu_\alpha)
+        \end{split}
+    \end{align*}
+    \end{definition}
+    Notice that both maps map \(K\rightarrow \QQ\)\improvement{why is this?}, and that the determinant map is multiplicative while the trace map is additive. It also makes sense to fix a \(\QQ\) basis since the extension is finite. A property we will often use is that the norm and trace for integers are both rational integers. We state it here without proof.
+    \begin{proposition}[\cite{Basic Algebraic Number Theory}]
+        The norm and trace of \(\alpha\in \OO\) are rational integers. 
+    \end{proposition}
+    Additionally, \(N(\alpha) = \pm 1 \Leftrightarrow \alpha\in\OO^*\): The norm of an element is \(\pm1\) if, and only if, it is a unit in the ring of integers.\par
+    \cite{First R-LWE}A number field \(K = \QQ(\zeta)\) has \(n\) exactly ring embeddings \(\sigma_i : K\rightarrow \mathbb{C}\), by sending \(\zeta\) to a root of the minimal polynomial \(f(X)\) of \(\zeta\). Since the complex roots come in conjugate pairs, so does the embeddings. Denote by \(s_1\) the number of real embeddings and by \(s_2\) the number of \emph{pairs} or complex embeddings. As such, \(n = s_1 + 2s_2\). By convention, order the embeddings as follows: \(\sigma_1, \dots \sigma_{s_1}\) are the real embeddings. The complex ones is ordered such that \(\sigma_{s_1 + s_2 + j} = \compconj{\sigma_{s_1 + j}}\) for \(j\in\{1,\dots ,s_2\}\). Therefore, with increasing \(j\) we have first the \(s_1\) real embeddings, then the \(s_2\) complex embeddings \emph{with no conjugates among themselves} and lastly the \(s_2\) conjugates. Now we define
+    \begin{align*}
+        \sigma(x) = (\sigma_1(x), \dots , \sigma_{n}(x))
+    \end{align*}
+     as the \emph{canonical} embedding of \(K\mapsto \RR^{s_1}\times \mathbb{C}^{2s_2}\)\improvement{is this defined elsewhere?}. Notice that this means that certain elements of \(K\) will have slightliy unusual norms. Take \(K = \QQ(\zeta_p)\) a cyclotomic field. A root of unity, which 'usually' has norm 1, \(\zeta_p\) will be embedded as
+     \begin{align*}
+         \sigma(\zeta_p) = (\zeta_p, \zeta_p^2, \dots , \zeta_p^{n-1})
+     \end{align*}
+     which means that its norm \(||\zeta_p|| := ||(\zeta_p, \dots ,\zeta_p^{n-1}||_2 = \sqrt{n}\).
+\subsection{Ring of Integers}
+    A lot of the background for solving the lattice problems lie in algebraic number theory. Here, we generalize number theory over the field \(\QQ\) and its ring of integers \(\ZZ\) to an extension field \(K\supseteq\QQ\) and \emph{its} ring of integers, denoted \(\OO_K\). As to not cause confusion, we call \(\ZZ\) the \emph{rational integers}. We call an extension field \(K\) of \(\QQ\) a \emph{number field}. To have a discussion of a generalized ring of integers, we need to define it:
+    \begin{definition}[Integral Element and Set of Algebraic Integers]
+        Let \(K\) be a field. We say that \(n\) is an \emph{integral element} in \(K\) if \(n\) is a root of a monic polynomial with rational integer coefficients. The \emph{set of algebraic integers} of \(K\), denoted \(\OO_K\) is the set of all integral elements of \(K\). 
+    \end{definition}
+    Trivially, a rational integer \(n\) is the root of \(x - n\) and therefore we have \(\ZZ\subseteq\OO_K\). We want to prove that \(\OO_K\) is a ring, and to do that we need to following proposition:
+    \begin{proposition}
+    \label{Prop: Equivalence Algebraic Integer Integer Minimal Polynomial}
+        The minimal polynomial of \(\alpha\in K\) has integer coefficients if, and only if, \(\alpha\) is an algebraic integer.
+    \end{proposition}
+    \begin{proof}
+        Assume that the minimal polynomial of \(\alpha\), say \(g(X)\) has integer coefficients. Since \(g(\alpha) = 0\) by the definition of minimal polynomial, \(\alpha\) is an algebraic integer. \par
+        Assume now that \(\alpha\) is an algebraic integer. By definition, there exists an \(f(X)\in\ZZ [X]\) such that \(f(\alpha) = 0\). If \(f(X)\) is the minimal polynomial we are done. Let therefore \(g(X)\) be the minimal polynomial of \(\alpha\). We need to show that \(g(X)\) also has integer coefficients. Since \(g(X)\) is the minimal polynomial, we have that 
+        \begin{align*}
+            f(X) = g(X)h(X)
+        \end{align*}
+        for some \(h(X)\). Now assume, towards a contradiction, that \(g(X)\) has rational coefficients, i.e. that at least one denominator is divisible by a prime \(p\). If \(g(X)\) has a rational coefficient, then one of them must be divisible by \(p\) (by fundamental theorem of algebra). Let \(u\) be the smallest integer such that \(p^ug(X)\) has no denominators divisible by \(p\). Similarly, let \(v\) be the smallest integer such that \(p^vh(X)\) has no denominators divisible by \(p\). Now, since the left side of
+        \begin{equation}
+        \label{Eq: Minimal Polynomial}
+           p^ug(X)p^vh(X) = p^{u + v}f(X)
+        \end{equation}
+        has no denominators divisible by \(p\). If we now regard Equation \eqref{Eq: Minimal Polynomial} as an equation in \(\mathbb{F}_p[X]\), since \(f(X)\) has integer coefficients, the right side is \(0\). Since we have removed all \(p=0\in\mathbb{F}_p\) from the left side, regarding it as polynomials in \(\mathbb{F}_p\) makes sense. Therefore,
+        \begin{align*}
+            p^ug(X)p^vh(X) = 0\in\mathbb{F}_p[X],
+        \end{align*}
+        and because we chose \(u\) and \(v\) to be minimal, neither \(p^ug(X)\) nor \(p^vh(X)\) are zero-polynomials. Since \(\mathbb{F}_p[X]\) has no zero divisors, this leads to a contradiction and we conclude that \(g(X)\in\ZZ[X]\).
+    \end{proof}
+    Towards a goal of proving that \(\OO_K\) is a ring, we also use a relationship between an algebraic integer \(\alpha\) and \(\ZZ[\alpha]\).
+    \begin{proposition}
+    \label{Prop: Equivalence Algebraic Integer and Finitely Generated Z-module}
+        Let \(\alpha\in K\). Then \(\alpha\) is an algebraic integer if, and only if, \(\ZZ[\alpha]\) is finitely generated as a \(\ZZ\)-module. 
+    \end{proposition}
+    \begin{proof}
+        Assume \(\alpha\) is an algebraic integer, and let \(g(X)\) be its minimal polynomial of degree \(m\). By \ref{Prop: Equivalence Algebraic Integer Integer Minimal Polynomial} we have that \(g(X)\) is monic with integer coefficients and can therefore write
+        \begin{align*}
+            g(X) = X^m + \hat{g}(X)
+        \end{align*}
+        for some \(\hat{g}(X)\). Because \(g(\alpha) = 0\) we can write \(\alpha^m = -\hat{g}(\alpha)\) where \(\text{deg}\;\hat{g}(X) < \text{deg}\;g(X)\). This means that any \(\alpha^u\) can be written as a \(\ZZ\)-linear combination of \(\{1, \alpha, \alpha^2,\dots ,\alpha^{m-1}\}\) which generate \(\ZZ[\alpha]\).\par
+        Now assume that \(\ZZ[X]\) is finitely generated with generators \(\{a_0, a_1,\dots ,a_{m - 1}\}\). Let \(f_i(X), i=0,\dots m-1\) be such that \(a_i = f(\alpha)\) for an \(\alpha\in K\). Now pick an \(N>\text{deg}\;f_i\) for all \(i=0,\dots ,m-1\). Since
+        \begin{align*}
+            \alpha^N = \sum\limits_{i= 0}^{m-1}a_ib_i\quad\text{for some }b_i\in\ZZ,
+        \end{align*}
+        choose
+        \begin{align*}
+            f(X) = X^N - \sum\limits_{i = 1}^{m - 1}f_i(X)b_i.
+        \end{align*}
+        Because we chose \(N\) to be larger than all \(\text{deg}\;f_i(X)\), \(f(X)\) is monic and has integer coefficients. Furthermore, \(f(\alpha) = 0\) so \(\alpha\) is an algebraic integer.
+        \end{proof}
+        \begin{theorem}
+        \(\OO_K\) is a ring.
+        \end{theorem}
+        \begin{proof}
+        Let \(\alpha, \beta \in \OO_K\). By Proposition \ref{Prop: Equivalence Algebraic Integer and Finitely Generated Z-module} we have that \(\ZZ[\alpha]\) and \(\ZZ[\beta]\) are finitely generated, and therefore \(\ZZ[\alpha, \beta]\) is finitely generated. Regarding \(\ZZ[\alpha, \beta]\) as a ring, we have that \(\alpha\beta, \alpha\pm\beta\in\ZZ[\alpha, \beta]\). Now, since \(\ZZ[\alpha\beta]\) and \(\ZZ[\alpha\pm\beta]\) are both subrings of \(\ZZ[\alpha, \beta]\), they are finitely generated. By Proposition \ref{Prop: Equivalence Algebraic Integer and Finitely Generated Z-module} again, we conclude that \(\alpha\beta\) and \(\alpha\pm\beta\) are algebraic integers and \(\OO_K\) is therefore a ring. 
+    \end{proof}
+    If we let the field be \(\QQ\), then the ring of integers equals the rational integers \(\ZZ = \OO_\QQ\). To see this, recall Gauss' \needtodo{Check this is the right lemma} lemma that every root of a monic polynomial with rational coefficients is a rational integer. As \(\ZZ\subseteq\OO_K\) this is the simplest form the ring of integers can have. \(\OO_K\) might be more complicated than this. Without restrictions of the field \(K\), the ring of integers can be quite hard to determine. But alas, we can find some structure:
+    \begin{proposition}
+    \label{Prop: QO equals K}
+        Let \(K\) be a number field with ring of integers \(\OO_K\). Then \(\QQ\OO_K = K\).
+    \end{proposition}
+    \begin{proof}
+        Clearly \(\QQ\OO_K\subseteq K\).\par
+        \underline{\(K\subseteq\QQ\OO_K\)}: Now assume \(\alpha\in K\). Let \(f(X)\) be the minimal polynomial of \(\alpha\). Let \(d\) be the least common multiple of the coefficients of \(f(X)\). Then let 
+        \begin{align*}
+            d^{\text{deg}\;f(X)}f(\frac{X}{d}) = g(X).
+        \end{align*}
+        By design, \(df(X)\) will have only integer coefficients, and \(d^{\text{deg}\;f(X)}f(X/d)\) will be monic. Additionally, \(g(\alpha d) = f(\alpha) = 0\), so \(g(X)\) is a monic polynomial with integer coefficients that has \(\alpha d\) as a root. By Proposition \ref{Prop: Equivalence Algebraic Integer and Finitely Generated Z-module} we get that \(\alpha d\in\OO_K\subseteq\QQ\OO_K\) which we wanted to prove. 
+    \end{proof}
+    From this proof we get a small lemma:
+    \begin{lemma}
+        \label{Lemma: a in K can be ad in O}
+        For any \(\alpha\in K\), there exists \(d\in\ZZ\) such that \(\alpha d \in\OO\).
+    \end{lemma}
+    \begin{proof}
+        See proof of Proposition \ref{Prop: QO equals K}.
+    \end{proof}
+    Notice that the \(d\in\ZZ\) acts as a denominator, multiplying \(\alpha\) by \(d\) cancels whatever a denominator means for an element in \(K\) and gives us an integral element. \par
+    Now we have the tools to prove a central part of the ring of integers.
+    \begin{theorem}
+    \label{Thm: O is free}
+        The ring of integers \(\OO_K\) is a free abelian group of rank \(n = [K:\QQ]\)
+    \end{theorem}
+    \begin{proof}
+        From Lemma \ref{Lemma: a in K can be ad in O} we know that there exists a \(\QQ\)-basis \(\{\alpha_1,\dots ,\alpha_n\}\) of \(K\) with \(\alpha_i\in\OO_K\) for all \(i = 1,\dots n\). We can therefore write
+        \begin{align*}
+            x = \sum\limits_{i = 1}^{n} c_i\alpha_i
+        \end{align*}
+        \needtodo{Finish this proof}\cite{Basic Algebraic Number Theory}
+    \end{proof}
+    
+\subsection{Ideals of Ring of Integers}
+    We now know what \(\OO_K\) is a ring and finitely generated as a \(\ZZ\)-module. An important part of the ring of integers is its ideals. We define the ideal norm as
+    \begin{definition}[Ideal Norm]
+    The norm of an ideal \(\fraka\subseteq \OO_K\) is
+    \begin{align*}
+        N(\fraka) = |\OO_K/\fraka|
+    \end{align*}
+    \end{definition}
+    It can be shown that the norm of an ideal if finite. Indeed, we will show later that both \(\OO\) and any ideal \(\fraka\subseteq\OO\) have a basis with the same number of elements. We see that a 'large' ideal in the subset sense will have a small norm. This means that maximal ideals are ideals with small norm.\par
+    
+    For primes in \(\ZZ\) we have two equivalent definitions: A number is prime if \(p=ab\implies a\text{ or }b \) is a unit \textit{or} \(p|ab\implies p|a \text{ or }p|b\). However, this definition does not generalize. \cite{Basic Algebraic Number Theory}. In the general case, we differentiate between these two properties, and call the first one \emph{irreducible} and the second one \emph{prime}. We can therefore define a prime ideal as follows:
+    \begin{definition}[Prime Ideal]
+        An ideal \(\mathfrak{p}\) is \emph{prime} if for any ideals \(\mathfrak{a}\) and \(\mathfrak{b}\)
+        \begin{align*}
+            \mathfrak{a}\mathfrak{b}\subseteq \mathfrak{p} \implies \mathfrak{a}\subseteq \mathfrak{p}\quad\text{or}\quad \mathfrak{b}\subseteq \mathfrak{p}
+        \end{align*}
+    \end{definition}
+    
+    A special property of prime ideals in \(\OO\) is that they are all maximal.
+    \begin{proposition}
+        \label{Prop: Every Prime Ideal in O is Maximal}
+        Every prime ideal in \(\OO\) is maximal.
+    \end{proposition}
+    \begin{proof}
+        Any ideal \(I\subseteq \OO\) is maximal if, and only if, the quotient \(\OO/I\) is a field. We therefore show that this is the case for \(\frakp\). Take \(x\in\OO/\frakp\). Because \(\frakp\) is prime, \(\OO/\frakp\) is an integral domain. Therefore, the kernel of the multiplication map \(\mu_x:\OO/\frakp \rightarrow \OO/\frakp\) is 0 and thus \(\mu_x\) is injective. Since \(\OO/\frakp\) is finite\needtodo{has not been shown}, \(\mu_x\) is also surjective so it is a bijection. Take \(x\inverse = \mu_x\inverse(1)\). Now \(xx\inverse = x\mu_x\inverse(1) = 1 \). We showed that every element of \(\OO/\frakp\) has an inverse, thus it is a field and conclude that \(\frakp\) is maximal.
+    \end{proof}
+    We eventually want to prove that any ideal is the unique product of prime ideals up to order of the factors. Towards this goal we show the following inclusion.
+    \begin{proposition}
+    \label{Prop: Prime Subset of Ideal}
+    Let \(I\) be a non-zero ideal of \(\OO\). Then there exists prime ideals \(\frakp_1,\dots\frakp_r\) of \(\OO\) such that
+        \begin{align*}
+            \frakp_1\frakp_2 \dots\frakp_r \subseteq I
+        \end{align*}
+    \end{proposition}
+    \begin{proof}
+        Let \(S\) be the set of all ideals which do not contain a product of prime ideals. We want to prove that \(S\) is empty. We do this by contradiction: If it contains one element then it contains too many. Towards that goal, let \(I\) be in \(S\). Because a prime ideal contains itself, \(I\) can not be prime. Since \(I\) is not prime, we can find \(\alpha, \beta\in\OO\) such that \(\alpha\beta\in I\) but neither \(\alpha\) nor \(\beta\) is in \(I\). We define 
+        \begin{align*}
+            J_1 = \alpha\OO + I\supsetneq I\quad J_2 = \beta\OO + I\supsetneq I.
+        \end{align*}
+        Because \(\alpha, \beta\not\in I\) we have strict inclusions. Assume, towards contradiction, neither \(J_1\in S\) nor \(J_2\in S\). This means that there exists \(\frakp_1, \dots , \frakp_r\) and \(\mathfrak{q}_1, \dots ,\mathfrak{q}_s\) such that \(\frakp_1 \dots \frakp_r \subseteq J_1\) and \(\mathfrak{q}_1 \dots \mathfrak{q}_s \subseteq J_2\). We therefore have that
+        \begin{align*}
+            \frakp_1 \dots \frakp_r \mathfrak{q}_1 \dots \mathfrak{q}_s \subseteq J_1J_2\subseteq I.
+        \end{align*}
+        But then \(\frakp_1 \dots \frakp_r \mathfrak{q}_1 \dots \mathfrak{q}_s\subseteq I\), a contradiction. Therefore \(J_1\in S\) or \(J_2\in S\). Let \(I_1\) be the one which is not in S. We can do the above procedure again and find a new ideal \(I_1\subsetneq I_2\). We then get a strictly decreasing sequence
+        \begin{align*}
+            N(I) > N(I_1) > N(I_2) > \dots
+        \end{align*}
+        The norms are all integers \improvement{Show this}, so this leads to a contradiction. We conclude that \(S\) is empty.
+    \end{proof}
+    We eventually want a group structure on ideals, but for 'normal' ideals, called integer ideals, there are not always inverses. We therefore extend the notion of an ideal.
+    \begin{definition}[Fractional Ideal]
+        Let \(R\) be an integral domain, \(K\) its field of fractions. Then an \(R\)-submodule \(\fraka \subseteq K\) is a \emph{fractional ideal} if \(\exists\) a non-zero \(d\in R\) such that \(d\fraka\subseteq R\). 
+    \end{definition}
+    
+    The element \(d\in R\) in the above definition can be thought of as "cancelling" the denominators in \(\fraka\). We can therefore view fractional ideals as ideals on the form \(\frac{1}{d}\frakb\) for an integral ideal \(\frakb\)\par
+    Letting \(R=\ZZ\), \(K=\QQ\) and choosing \(\fraka = \frac{1}{2}\ZZ\) we can pick the element \(r = 2 \in \ZZ\) such that
+    
+    \begin{align*}
+        r\fraka\ = 2\cdot\left(\frac{1}{2}\mathbb{Z}\right) = \mathbb{Z} \subseteq R = \mathbb{Z}
+    \end{align*}
+    
+    and hence \(\frac{1}{2}\mathbb{Z}\) is a fractional ideal in \(\mathbb{Q}\). We extend the notion of the norm to fractional ideals.
+    \begin{definition}[Norm of Fractional Ideal]
+    Let \(I\) be a fractional ideal, i.e. there exists \(d\) such that \(dI\subseteq\OO\). We define the norm
+    \begin{align*}
+        N(I) = \frac{N(dI)}{N(\langle d\rangle)}
+    \end{align*}
+    \end{definition}
+    Notice that \(dI\) is an ideal, and so is \(\langle d \rangle\) so this definition if well defined. The norm if a fractional ideal need not be an integer, but this is still the case for integral ideals. Now, if there exist a fractional ideal \(\frakb\) such that 
+    \begin{align*}
+        \fraka\frakb = R,
+    \end{align*}
+    we say that \(\fraka\) is invertible. If an ideal is invertible, the inverse has a special form. We prove this for prime ideals first.
+    \begin{proposition}
+    \label{Prop: Invertible Prime Ideal}
+        Let \(\frakp\) be a non-zero prime ideal of \(\OO\). Define
+        \begin{align*}
+            \frakp\inverse = \{x\in K\suchthat x\frakp\in\OO\}.
+        \end{align*}
+        Then we have that
+        \begin{enumerate}
+            \item \(\frakp\inverse\) is a fractional ideal of \(\OO\).
+            \item \(\OO\subsetneq\frakp\inverse\)
+            \item \(\frakp\inverse\frakp = \OO\)
+        \end{enumerate}
+    \end{proposition}
+    \begin{proof}
+    \begin{enumerate}
+        \item Pick an \(a\in\frakp\subset K\). By definition of \(\frakp\inverse\), \(a\frakp\inverse\subseteq\OO\). Therefore \(\frakp\inverse\) is a fractional ideal of \(\OO\)
+        
+        \item Clearly \(\OO\subseteq\frakp\inverse\). It is enough to find an element of \(\frakp\inverse\) which is not an algebraic integer. Let \(0\neq a\in\frakp\). By Proposition \ref{Prop: Prime Subset of Ideal} we can choose the minimal \(r\) such that 
+        \begin{align*}
+            \frakp_1 \dots \frakp_r\subseteq (a)\OO.
+        \end{align*}
+        Since \((a)\OO \subseteq \frakp\) and \(\frakp\) is prime, we get that \(\frakp_i\subseteq\frakp\) for some \(1\leq i\leq r\). Let \(i = 1\). Now, since prime ideals are maximal by Proposition \ref{Prop: Every Prime Ideal in O is Maximal}, \(\frakp_1 = \frakp\). Removing \(\frakp_1\) from the product of prime ideals yields
+        \begin{align*}
+            \frakp_2\dots\frakp_r \not\subseteq (a)\OO
+        \end{align*}
+        by the minimality of the index \(r\). We can therefore find \(b\in\frakp_2 \dots \frakp_r\) but \(b\not\in (a)\OO\). We not claim that \(ba\inverse\) is in \(\frakp\inverse\) but not in \(\OO\). Since \(\frakp = \frakp_1\), we have that \(b\frakp\subseteq (a)\OO\) so \(ba\inverse\frakp \subseteq \OO\) and \(ba\inverse\in\frakp\inverse\). Since \(b\not\in (a)\OO\) we have that \(ba\inverse\not\in\OO\). We have therefore found an element, namely \(ba\inverse\) which is in \(\frakp\inverse\) but not in \(\OO\). We conclude that \(\OO\subsetneq\frakp\inverse\).
+        \item Here we prove that \(\frakp\inverse\) is indeed the inverse of \(\frakp\). We have that 
+        \begin{align*}
+            \frakp = \frakp\OO \subseteq \frakp\frakp\inverse = \frakp\inverse\frakp \subseteq \OO
+        \end{align*}
+        \improvement{Argue? It is pretty clear.} Since \(\frakp\) is maximal by Proposition \ref{Prop: Every Prime Ideal in O is Maximal} we have that \(\frakp\frakp\inverse\) is either equal to \(\frakp\) or \(\OO\). We proceed by showing that \(\frakp = \frakp\frakp\inverse\) is not possible. Assume therefore, towards a contradiction, that \(\frakp = \frakp\frakp\inverse\). Let \(\{\beta_1, \dots , \beta_r\}\) be a set of generators of \(\frakp\) as a \(\OO\)-module. Pick \(d := ab\inverse\), the same element as in the previous point, which is in \(\frakp\inverse\) but not in \(\OO\). We get that 
+        \begin{align*}
+            d\beta_i \in\frakp\inverse\frakp = \frakp \quad\text{and}\quad d\frakp \subseteq \frakp\inverse\frakp = \frakp.
+        \end{align*}
+        Now, since \(d\frakp\subseteq\frakp\) we have
+        \begin{align*}
+            d\beta_i = \sum\limits_{j = 1}^r c_{ij}\beta_j\in\frakp,\quad i=1,\dots ,r
+        \end{align*}
+        where \(c_{ij}\in\OO\). Equivalently
+        \begin{align*}
+            0 = \left(\sum\limits_{j = 1, j \not = i}^r c_{ij}\beta_j\right) + \beta_i(c_{ii} - d).
+        \end{align*}
+        For each \(j\) we get an equation, and we can write them in matrix form as
+        \begin{align}
+            \vec{C}\cdot \vec{\beta} := \left(\begin{tabular}{ccc}
+                \(c_{11} - d\) & \(\dots\) & \(c_{1r}\) \\
+                \(c_{21}\) & \(\dots\) & \(c_{2r}\) \\
+                \(\vdots\) & \(\ddots\) & \(\vdots\) \\
+                \(c_{r1}\) & \(\dots\) & \(c_{rr} - d\)
+            \end{tabular}\right)
+            \left(\begin{tabular}{c}
+                 \(\beta_1\)  \\
+                 \(\beta_2\) \\
+                 \(\vdots\) \\
+                 \(\beta_r\) 
+            \end{tabular}\right) = 0.
+            \end{align}
+        Therefore, the determinant of \(\vec{C}\) is 0, while it is an equation of degree \(r\) in the variable \(d\). We have that\change{show this?} \(\OO\) is integrally closed, and therefore \(d\in\OO\), a contradiction. We conclude that \(\frakp\frakp\inverse = \OO\).
+    \end{enumerate}
+    \end{proof}
+    The set of all invertible fractional ideals of \(K\), denoted \(\mathcal{F}_K\), form a group under ideal multiplication where the ring \(\OO\) is the identity element. Because \(\fraka\frakb = \frakb\fraka\), this group is abelian and hence all subgroups are normal. We first prove that \(\mathcal{F}_K\) is indeed a group.
+    \begin{proposition}
+        The set \(\mathcal{F}_K\) of all fractional ideals of a number field \(K\) forms a group under ideal multiplication.
+    \end{proposition}
+    \begin{proof}
+        It is obvious that the identity element is \(\OO\). By Proposition \ref{Prop: Invertible Prime Ideal} we have that all prime ideals are invertible. Pick therefore a non-prime integral ideal \(I\), with the additional property that its norm is minimal. \(I\) is included in a maximal ideal \(\frakp\) which, by  Proposition \ref{Prop: Every Prime Ideal in O is Maximal} is also prime. Therefore
+        \begin{align*}
+            I\subseteq \frakp\inverse I \subseteq \frakp\inverse\frakp = \OO,
+        \end{align*}
+        again by Proposition \ref{Prop: Invertible Prime Ideal}. We want to show that \(I\neq \frakp\inverse I\) such that the first inclusion is strict. Assume, towards a contradiction, that \(I = \frakp\inverse I\). By Proposition \ref{Prop: Invertible Prime Ideal} we can pick a \(d\in\frakp\inverse\) but not in \(\OO\). Denote by \(\{\beta_1 ,\dots ,\beta_r \}\) the set of generators of \(I\) as a \(\OO\)-module. We can write
+        \begin{align*}
+            d\beta_i \in\frakp\inverse I = I \quad dI\subseteq \frakp\inverse I = I
+        \end{align*}
+        and by the same argument as in Proposition \ref{Prop: Invertible Prime Ideal}\needtodo{check that we did this above} we get that \(d\in\OO\) which contradicts our assumption. Therefore \(I\subsetneq \frakp\inverse I\). Therefore
+        \begin{align*}
+            N(I) > N(\frakp\inverse I).
+        \end{align*}
+        Since we picked \(I\) to be the ideal of minimal norm which was not invertible, we get that \(\frakp\inverse I\) is invertible. Let \(J\in\mathcal{F}_K\) be its inverse. But this means that \(J\frakp\inverse I = \OO\), and because we have associativity of ideal multiplication\improvement{do we?} we conclude that \((J\frakp\inverse )I = \OO\), so \(I\) does have an inverse. \par
+        The only thing that remains now is to show that any fracional ideal is invertible. Let \(I\) be a fractional ideal. We have shown \needtodo{Show!} that \(I\) can be written as \(\small\frac{1}{d} J\) for some integral ideal \(J\) and \(d\in\OO\). Therefore, since \(J\inverse\) exists, \(dJ\inverse\) is the inverse of \(I\).
+    \end{proof}
+    Now we are ready to prove a big theorem, namely that we can factor any integral ideal in prime factors uniquely.
+    \begin{theorem}
+    Any non-zero integral ideal \(I\) of \(\OO\) can be written uniquely, up to ordering, as a product of prime ideals of \(\OO\). 
+    \end{theorem}
+    \begin{proof}
+        We start with proving existence. Let \(I\) be the maximal integral ideal of \(\OO\) which does not factor in prime ideals. If \(I\) is maximal, then it is prime by Proposition \ref{Prop: Every Prime Ideal in O is Maximal}, but then it would be a product of prime ideals, namely itself. Therefore there exists a prime and maximal ideal \(\frakp\supsetneq I\). We then have that \(I\frakp\inverse \subsetneq \OO\) is an integral ideal \improvement{show that is integral ideal}and \(I\subsetneq I\frakp\inverse \subsetneq \OO\). Now, the first inclusion is strict because if \(I = I\frakp\inverse\) then \(\frakp\inverse = \OO\). Since we assumed \(I\) was the largest ideal which did not have a factorization, \(I\frakp\inverse\) must have one. Call it
+        \begin{align*}
+            I\frakp\inverse = \frakp_2\dots\frakp_r
+        \end{align*}
+        but then
+        \begin{align*}
+            I = \frakp\frakp_2\dots\frakp_r
+        \end{align*}
+        and we get a contradiction. We conclude that any integral ideal \(I\) has a factorization of prime ideals.\par
+        We move on to proving the uniqueness of this factorization. Assume we have two distinct factorizations for an ideal \(I\)
+        \begin{align*}
+            \frakp_1\frakp_2\dots\frakp_r = I = \mathfrak{q}_1\mathfrak{q}_2\dots\mathfrak{q}_s.
+        \end{align*}
+        Let \(\frakp_1\) differ from all \(\mathfrak{q}_j\). Then we pick \(\alpha_j\in\mathfrak{q}_j\) but which is not in \(\frakp_1\) and consider
+        \begin{align*}
+            \prod\alpha_j\in\prod\mathfrak{q}_j = I \subseteq \frakp_1.
+        \end{align*}
+        The last inclusion holds because \(\frakp_1\) is prime and therefore maximal. But since \(\frakp_1\) is prime and \(\prod\alpha_j\in\frakp_1\), by the definition of a prime ideal one of the \(\alpha_j\) must lie in \(\frakp_1\), a contradiction. We conclude that \(\frakp_1\) must be equal to one of the \(\mathfrak{q}_i\), say \(\mathfrak{q}_1\). Then we get that
+        \begin{align*}
+            \frakp_2\dots\frakp_r = \mathfrak{q}_2\dots\mathfrak{q}_s
+        \end{align*}
+        and, by induction, we conclude that \(r = s\) and that the factorization is unique up to ordering.
+    \end{proof}
+
+\subsection{Class Group}
+    Now let \(\mathcal{P}_K\) denote the subgroup of principal fractional ideals of all fractional ideals of \(\OO\). To show that \(\mathcal{P}_K\) is indeed a subgroup we only need to show that it is closed\needtodo{Show this}. We can now construct the class group of K:
+    
+    \begin{definition}[Class Group]
+    Let \(\OO_K\) be the ring of integers for a field \(K\). The quotient group
+    \begin{align*}
+        \CL _K = \mathcal{F}_K/\mathcal{P}_K
+    \end{align*}
+    is called the \emph{class group} of \(K\). 
+    \end{definition}
+    We can observe that if \(\mathcal{P} _K\) is trivial, i.e. isomorphic to \(\OO_K\), then all fractional ideals in \(K\) are principal. Since all integer ideals are trivially fractional, this means that all integer ideals are principal too. The order of \(\CL _K\) therefore measures, in some sense, in what degree the domain \(\mathcal{O}_K\) fails to be a principal ideal domain. An important number in algebraic number theory is the \emph{class number} of a field \(K\). This is defined to be the size of the corresponding class group \(\CL _K\), denoted \(h(K)\). It is desirable and conjectured that \(h(K)\) is not very big.
+    \begin{figure}
+    \[\xymatrixrowsep{3pc}
+    % General picture
+    \xymatrix{
+    K & \OO_K\ar@{^{(}->}[l]\\
+     & \mathbb{Z}[\xi_n] \ar@{^{(}->}[u] \\
+    \mathbb{Q}\ar@{^{(}->}[uu] & \mathbb{Z} \ar@{^{(}->}[l]\ar@{^{(}->}[u]}
+    \]
+    \[
+    \xymatrixrowsep{0.5pc}
+    \xymatrixcolsep{0.5pc}
+    \xymatrix{
+    \mathbb{Z}[\xi_n] & \simeq &  \mathbb{Z}^n \\
+    \rotatebox{90}{\(\subseteq\)} & & \rotatebox{90}{\(\subseteq\)} \\
+    P & \simeq & \Lambda}
+    \]
+    \caption{The situation at hand my man.}
+    \end{figure}
+
+\subsection{Discriminant and Ramification}
+    The discriminant of a number field measures the density of the ring of integers \(\mathcal{O}_K\). See \cite{Basic Algebraic Number Theory} for more details and proofs. It often appears in formuals and results, and therefore warrants a discussion here. In general, let \(K\) be a number field and \(\mathcal{O}_K\) its ring if integers. Denote the \(\mathbb{Z}\)-basis of \(\mathcal{O}_K\) by \(\left\{b_1,\dots ,b_n\right\}\) and let \(\left\{\sigma_1,\dots ,\sigma_n\right\}\) be the set of embeddings of \(K\) into \(\mathbb{C}\). Then define the discriminant as
+    \begin{definition}
+    The \emph{discriminant} \(\Delta_K\) of \(K\) is the rational integer
+    \begin{equation*}
+        \Delta_K = \left(\emph{det}\left(\begin{tabular}{cccc}
+             \(\sigma_1(b_1)\) & \(\sigma_1(b_2)\) & \(\dots\) & \(\sigma_1(b_n)\)  \\
+             \(\sigma_2(b_1)\) & \(\ddots\) & \(\dots\) & \(\sigma_2(b_n)\)  \\
+             \(\vdots\) & & \(\ddots\) & \(\vdots\) \\
+             \(\sigma_n(b_1)\) & \(\sigma_n(b_2)\) & \(\dots\) & \(\sigma_n(b_n)\).
+        \end{tabular}\right)^2\right)
+    \end{equation*}
+    \end{definition}
+    In our case where \(K = \mathbb{Q}(\xi_n)\) we get the simplification
+    \begin{equation}
+        \Delta_K = \Delta_{\mathbb{Q}(\xi_n)} = (-1)^{\phi(n)/2}\frac{n^{\phi(n)}}{\prod\limits_{p|n}p^{\phi(n)/(p-1)}},
+        \label{Eq:Discriminant for prime}
+    \end{equation}
+    where \(n > 2\). We can convince ourselves of this fact by this small example: Let \(n=3\) and \(\xi :=\xi_3\) for cleaner notation. If choose the basis \(\left\{1, \xi \right\}\) for \(\mathbb{Z}[\xi] \) and recalling that \(\sigma_1:\xi\mapsto\xi\), \(\sigma_2:\xi\mapsto\xi^2\) defines all the embeddings of \(\mathbb{Q}(\xi)\) in \(\mathbb{C}\) we get that the matrix involved in the discriminant is
+    \begin{align*}
+        \left(\begin{tabular}{ccc}
+             1 & \(\xi\) \\
+             1 & \(\xi^2\) \\
+        \end{tabular}\right).
+    \end{align*}
+    The determinant is \(\xi^2-\xi\) and squaring the determinant yields \(\Delta_K = - 3\).\improvement{This example isn't very illuminating :( Use larger example} We get the same result using \eqref{Eq:Discriminant for prime}:
+    \begin{align*}
+        \Delta_K = (-1)^{2/2}\frac{3^2}{3^{2/2}} = -3
+    \end{align*}
+    which is a good sign for the identity.
+
+    We have shown that any ideal of \(\OO\) factors in to prime ideals uniquely. If we now consider an extension field \(L/K\), then what happens to the ideal \(\frakp\OO_L\). Now \(\frakp\OO_L\) might not be prime, but it can of course always be factored as a product of prime ideals of \(\OO_L\). 
+
+    \begin{definition}[Ramification]
+    Let \(\mathcal{O}_K\) be the ring of integers of \(K\), and \(\frakp\) be a prime ideal of \(\mathcal{O}_K\). For a field extension \(L\) of \(K\), consider the integral closure \(S = \mathcal{O}_L\) of \(\mathcal{O}_K\) in \(L\) and the ideal \(\frakp\mathcal{O}_L\). If the extension is of finite degree we have
+    \begin{align*}
+        \frakp\mathcal{O}_L = \frakp_1^{e_1}\cdot\frakp_2^{e_2}\cdot\dots\cdot\frakp_k^{e_k}
+    \end{align*}
+    where \(\frakp_i\) are distinct prime ideals in \(\mathcal{O}_L\). We say that \(\frakp\) \emph{ramifies} in \(L\) if \(e_i > 1\) for any \(i\). We call the largest such \(e_i\) the \emph{ramification index}.
+    \end{definition}
+    We can classify the primes which ramify exactly by the following theorem.
+    \begin{theorem}
+    \label{Eq: Prime Discriminant Division Theorem}
+        A prime \(p\) ramifies in \(L/K\) \(\quad\Leftrightarrow\quad\) \(p|\Delta_K\).
+    \end{theorem}
+    \begin{proof}
+        See \cite{Basic Algebraic Number Theory}
+    \end{proof}
+    
+    If we let \(K = \mathbb{Q}\) and \(L = \mathbb{Q}(i)\) we get that \(\mathcal{O}_K = \mathbb{Z}\). We know from before that \(\OO_L = \mathbb{Z}[i]\). The ideal \((2)\) in \(\mathbb{Z}\) now "branches" out into \((2) = (1+i)^2\) in \(\mathbb{Z}[i]\) and hence \emph{ramifies} in \(\mathbb{Z}[i]\) because the ideal \((i+1)\) is prime and the ramification index is 2. We know primes in \(\OO_K\) ramifies in \(\OO_L\) if, and only if, the prime divides the discriminant\cite{Eq: Prime Discriminant Division Theorem}. Therefore, \((2)\) is the only prime that ramifies in \(\mathbb{Q}(i)\) because the discriminant is \(\Delta_{\mathbb{Q}(i)} = -4\):
+    
+    \begin{align*}
+        \begin{tabular}{c}
+        \(\sigma_1:i\mapsto i\) \\
+        \(\sigma_2:i\mapsto -i\)
+        \end{tabular}
+        \quad
+        M = \left(\begin{tabular}{cc}
+             \(1\) & \(i\) \\
+             \(1\) & \(-i\)
+        \end{tabular}\right)
+        \quad
+        \Delta_{\mathbb{Q}(i)} = \text{det}(M)^2 = -4
+    \end{align*}
+
+\subsection{Circulant Matrices and Character Group}
+    We associate with the vector \(a = (a)_{g\in G}\) for an abelian group \(G\) the \emph{circulant matrix} with the \(|G|\times |G|\) matrix whose \((i, j)\)-th entry is \(a_{ij^{-1}}\). It is important to note that we here index by the group elements of \(G\) which results in very clean notation. Closely related to the circulant matrix is the \emph{character group} associated with a group \(G\).
+    \begin{definition}[Character Group]
+    Let \(G\) be a finite group. A morphism \(\chi:G\to\mathbb{C}\) is a \emph{character} if it is a group homomorphism from \(G\) to \(\mathbb{C}^*\). The set of all characters of a group is called the \emph{character group}, denoted \(\Hat{G}\), and is, naturally, a group under the usual multiplication of morphism \((\chi\phi)(g) = \chi(g)\phi(g)\).
+    \end{definition}
+    
+    Since \(G\) is finite the image of any character is a root of unite because for all \(g\in G\quad\exists k\in\mathbb{Z}\) such that \(g^k = 1_G\) and hence \(\chi(g)^k = \chi(g^k) = \chi(1_G) = 1\). It is straightforward to verify that \(\hat{G}\) is indeed a group.
+    \begin{proof}
+    We have the map \(1_{\hat{G}}:g\mapsto 1\quad\forall g\) which is a character and acts as the identity on \(\hat{G}\). If we have the map \(\chi:G\to \mathbb{C}^*\) which maps \(g\mapsto u_g\), then define another map by
+    \begin{align*}
+        (\chi\phi)(g) = \chi(g)\phi(g) = u_g u_g^{-1}
+    \end{align*}
+    i.e. the map that assigns to all images of \(\chi\) their inverses. This is, by construction, the inverse of \(\chi\). \(\phi\) is a character because of the norm on \(\mathbb{C}\): If \(N(u) = 1\) then \(N(u^{-1}) = 1\) since \(N(1) = N(uu^{-1}) = N(u)N(u^{-1})\)
+    \end{proof}
+    
+    \begin{proposition}
+        For the character group \(\hat{G}\) of \(G\) we have \(|\hat{G}| = |G|\).
+    \end{proposition}
+    \begin{proof}
+        \needtodo{If this is so basic why is it hard to prove?}
+    \end{proof}
+    Noticing that \(\compconj{\chi(g)} = \compconj{\chi(g)^{-1}} = \compconj{\chi(g^{-1})}\) and identifying \(\chi\) be the vector \((\chi(g))_{g\in G}\) when natural then
+    \begin{align*}
+        \langle \chi, \chi\rangle = \sum\limits_{g\in G}\chi(g)\compconj{\chi(g)} = \sum\limits_{g\in G} 1 = |G|
+    \end{align*}
+    so all characters have euclidian norm \(\sqrt{|G|}\). Moreover, because \(\hat{G}\) is a group, the element
+    \begin{align*}
+        \chi\psi\inverse
+    \end{align*}
+    is an element in \(\hat{G}\). Therefore, we get that the inner product
+    \begin{align*}
+        \langle\chi ,\phi\rangle = \sum\limits_{g\in G}\chi(g)\compconj{\phi(g)} = \sum\limits_{g\in G}(\chi\phi^{-1}(g)) = 0
+    \end{align*}
+    since the sum of all \(m\)-th roots of unity is 0. In other words, distinct characters are orthogonal. We therefore have, from linear algebra\improvement{source}, that the matrix
+    \begin{align*}
+        \boldsymbol{P}_G = \frac{1}{\sqrt{|G|}}(\chi(g))_{g\in G, \chi\in\hat{G}}
+    \end{align*}
+    is unitary. This matrix has as columns the vector of images of the characters of \(\Hat{G}\). Now all of this is important because of this nice result:
+    \begin{proposition}
+        A complex matrix \(\boldsymbol{A}\) is G-circulant if, and only if, the \(\Hat{G}\times\Hat{G}\)-matrix \(\boldsymbol{P}_G^{-1}\boldsymbol{A}\boldsymbol{P}_G\) is diagonal. Equivalently, the columns of \(\boldsymbol{P}_G\) are the eigenvectors of \(\boldsymbol{A}\). If \(\boldsymbol{A}\) is the \(G\)-circulant matrix associated with \(\boldsymbol{a} = (a_g)_{g\in G}\), its eigenvalue corresponding to \(\chi\in\Hat{G}\) is \(\lambda_\chi = \langle a, \chi\rangle = \sum_{g\in G} \boldsymbol{a}_g\compconj{\chi(g)}\)
+    \end{proposition}
+    \begin{proof}
+        Suppose \(\vec{A}\) is \(G\)-circulant and let \(\chi\in\hat{G}\) be a character of \(G\). Consider then one of the entries of \(\vec{A}\chi\):
+        \begin{align*}
+            (\vec{A}\cdot\chi)_g = \sum\limits_{h\in G}a_{gh\inverse}\chi(h) \stackrel{k = gh\inverse}{=} \left( \sum\limits_{k\in G}. a_k\compconj{\chi(k)}\right)\cdot\chi(g)
+        \end{align*}
+        Recalling that \(\chi = (\chi(g))_{g\in G}\), we then get that \(\vec{A}\cdot \chi = \lambda_\chi\cdot \chi\). Since \(\chi\) is exactly the column vector in \(\vec{P}_G\), we have proven the left implication.\par
+        Convince yourself of the other direction.
+    \end{proof}
+    
+\subsection{Chinese Remainder Theorem}
+    We state the Chinese Reminder Theorem for ideals of \(\OO\).
+    \begin{theorem}[\cite{Basic Algebraic Number Theory}, p. 28]
+    \label{Thm: CRT}
+        Let \(I = \prod_{i = 1}^m \calI_i^{e_i}\) be the factorization of an ideal \(I\subseteq \OO\) with \(\calI_i \not= \calI_j\) for \(i\not = j\). Then there exists an isomorphism
+        \begin{align*}
+            \OO/I \rightarrow \prod\limits_{i = 1}^m \OO/\calI_i^{k_i}.
+        \end{align*}
+    \end{theorem}
+    Moreover
+    \begin{proposition}
+        Given two ideals \(\calI\) and \(\calJ\) in \(R\), there exists a \(t\in I\) such that \(t\calI\inverse\) is coprime to \(\calJ\).
+    \end{proposition}
+    And
+    \begin{proposition}
+    \label{Prop: Cancel Ideal}
+        Let \(\calI\) and \(\calJ\) be ideals in \(R\) and let \(t\in\calI\) be such that \(t\calI\inverse\) is coprime to \(\calJ\). Let \(\mathcal{M}\) be any fractional ideal of \(K\). The function
+        \begin{equation*}
+            \begin{split}
+                \theta_t:&K\rightarrow K\\
+                u & \mapsto t\cdot u
+            \end{split}
+        \end{equation*}
+        induces an isomorphism from \(\mathcal{M}/\calJ\mathcal{M}\) to \(\calI\mathcal{M}/\calI\calJ\mathcal{M}\) as \(R\)-modules. In particuilar,
+        \begin{align*}
+            \theta_t : R/\calJ\rightarrow \calI/\calI\calJ
+        \end{align*}
+        is an isomorphism. This is achieved by choosing \(\mathcal{M} = R\) the multiplicative identity.
+    \end{proposition}
+    This proposition is used for canceling the ideal \(\calI\), since the two sides are isomorphic.\par
+    Let us see an example of these results. Let
+    \begin{align*}
+        \calI = \langle 6 \rangle \quad \calJ = \langle 90 \rangle
+    \end{align*}
+    We can see that \(t = 102\in\calI\), and that \(\calI\inverse = \frac{1}{6}\ZZ\). Now
+    \begin{align*}
+        t\cdot\calI\inverse = \langle 17 \rangle = 17\cdot\ZZ
+    \end{align*}
+    and it is easy to see that \(t\cdot\calI\inverse = \langle 17 \rangle\) and \(\calJ = \langle 90 \rangle\) are coprime. Now consider the map
+    \begin{align*}
+        \theta_102(u) = 102\cdot u.
+    \end{align*}
+    It induces a module homomorphism
+    \begin{align*}
+        \theta_102:\ZZ/\langle 90 \rangle \simeq \rangle 6 \langle / \langle 6 \rangle \langle 90 \rangle.
+    \end{align*}
+    In this trivial case it is not hard to see that the right side is isomorphic to \(\ZZ/\langle 90 \rangle\), which is what Proposition \cite{Cancel Ideal}. However, this toy example shows the general idea of canceling the ideal \(\calI\) by finding \(t\).
